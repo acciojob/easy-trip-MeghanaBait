@@ -86,20 +86,19 @@ public class AirportRepository {
         if (flight == null || passenger == null){
             return "FAILURE";
         }
-        // Passenger already booked a flight
-        if(passangerFlightsMap.containsKey(passengerId) && passangerFlightsMap.get(passengerId).contains(flightId)) {
+        else if(passangerFlightsMap.containsKey(passengerId) && passangerFlightsMap.get(passengerId).contains(flightId)) {
+            // Passenger already booked a flight
             return "FAILURE";
         }
-
-        if(flightPassangersMap.containsKey(flightId)){
+        else if(flightPassangersMap.containsKey(flightId)){
             if(flightPassangersMap.get(flightId).contains(passengerId)){
                 return "FAILURE";
             }
         }
 
         // Max capacity reached
-        if(flightPassangersMap.containsKey(flightId)){
-            if(flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
+        if(flight != null && flightPassangersMap.containsKey(flightId)){
+            if(flight != null && flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
                 flightPassangersMap.get(flightId).add(passengerId);
                 List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
                 passangerFlightsMap.put(passengerId,flightList);
