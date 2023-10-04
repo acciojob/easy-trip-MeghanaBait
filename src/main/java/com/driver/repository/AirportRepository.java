@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+import static org.apache.coyote.http11.Constants.a;
+
 @Repository
 public class AirportRepository {
     Map<String, Airport> airportMap = new HashMap<>();
@@ -69,9 +71,11 @@ public class AirportRepository {
 
     public String bookATicket(Integer flightId, Integer passengerId) {
         //check failure conditions
-        if(!passangerFlightsMap.containsKey(passengerId)){
+        if(passangerFlightsMap.containsKey(passengerId)) {
             return "FAILURE";
-        }else if(flightPassangersMap.containsKey(flightId)){
+        }
+
+        if(flightPassangersMap.containsKey(flightId)){
             if(flightPassangersMap.get(flightId).contains(passengerId)){
                 return "FAILURE";
             }
@@ -114,7 +118,14 @@ public class AirportRepository {
 
     public String getAirportNameFromFlightId(Integer flightId) {
         if(flightMap.containsKey(flightId)){
-           return flightMap.get(flightId).getFromCity().toString();
+           String airportName  = flightMap.get(flightId).getFromCity().toString();
+           City city = null;
+           try{
+               city = City.valueOf(airportName);
+           }catch (IllegalArgumentException e){
+               return null;
+           }
+           return city.toString();
         }else{
             return null;
         }
