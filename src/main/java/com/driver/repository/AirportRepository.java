@@ -83,6 +83,7 @@ public class AirportRepository {
         Flight flight = flightMap.get(flightId);
         Passenger passenger = passengerMap.get(passengerId);
         // Invalid flightId or passengerId
+        try{
         if (flight == null || passenger == null){
             return "FAILURE";
         }
@@ -97,7 +98,6 @@ public class AirportRepository {
         }
 
         // Max capacity reached
-        try{
             if(flight != null && flightPassangersMap.containsKey(flightId)){
                 if(flight != null && flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
                     flightPassangersMap.get(flightId).add(passengerId);
@@ -120,11 +120,14 @@ public class AirportRepository {
     }
 
     public String cancelATicket(Integer flightId, Integer passengerId) {
-        if(flightPassangersMap.containsKey(flightId)){
-            flightPassangersMap.get(flightId).remove(passengerId);
-            passangerFlightsMap.get(passengerId).remove(flightId);
-            return "SUCCESS";
+        if(flightMap.containsKey(flightId)){
+            if(flightPassangersMap.containsKey(flightId)){
+                flightPassangersMap.get(flightId).remove(passengerId);
+                passangerFlightsMap.get(passengerId).remove(flightId);
+                return "SUCCESS";
+            }
         }
+
         return "FAILURE";
     }
 
