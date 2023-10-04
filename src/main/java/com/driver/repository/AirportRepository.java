@@ -97,20 +97,24 @@ public class AirportRepository {
         }
 
         // Max capacity reached
-        if(flight != null && flightPassangersMap.containsKey(flightId)){
-            if(flight != null && flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
-                flightPassangersMap.get(flightId).add(passengerId);
+        try{
+            if(flight != null && flightPassangersMap.containsKey(flightId)){
+                if(flight != null && flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
+                    flightPassangersMap.get(flightId).add(passengerId);
+                    List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
+                    passangerFlightsMap.put(passengerId,flightList);
+                    return "SUCCESS";
+                }
+            }else{
+                List<Integer> passengerList = new ArrayList<>();
+                passengerList.add(passengerId);
+                flightPassangersMap.put(flightId,passengerList);
                 List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
                 passangerFlightsMap.put(passengerId,flightList);
                 return "SUCCESS";
             }
-        }else{
-            List<Integer> passengerList = new ArrayList<>();
-            passengerList.add(passengerId);
-            flightPassangersMap.put(flightId,passengerList);
-            List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
-            passangerFlightsMap.put(passengerId,flightList);
-            return "SUCCESS";
+        }catch (NullPointerException e){
+            return "FAILURE";
         }
         return "FAILURE";
     }
@@ -135,17 +139,16 @@ public class AirportRepository {
 
     public String getAirportNameFromFlightId(Integer flightId) {
         if(flightMap.containsKey(flightId)){
-           String airportName  = flightMap.get(flightId).getFromCity().toString();
-           City city = null;
-           try{
-               city = City.valueOf(airportName);
-           }catch (IllegalArgumentException e){
-               return null;
+           City airportCity  = flightMap.get(flightId).getFromCity();
+           for(Airport airport : airportMap.values()){
+               if(airport.getCity().equals(airportCity)){
+                   return airport.getAirportName();
+               }
            }
-           return city.toString();
         }else{
             return null;
         }
+        return null;
     }
 
     public int calculateRevenueOfAFlight(Integer flightId) {
