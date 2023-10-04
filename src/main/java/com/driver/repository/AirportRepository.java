@@ -98,13 +98,12 @@ public class AirportRepository {
         }
 
         // Max capacity reached
-            if(flight != null && flightPassangersMap.containsKey(flightId)){
-                if(flight != null && flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
-                    flightPassangersMap.get(flightId).add(passengerId);
-                    List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
-                    passangerFlightsMap.put(passengerId,flightList);
-                    return "SUCCESS";
-                }
+            if (flight != null && flightPassangersMap.containsKey(flightId) &&
+                    flight.getMaxCapacity() > flightPassangersMap.get(flightId).size()) {
+                flightPassangersMap.get(flightId).add(passengerId);
+                List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
+                passangerFlightsMap.put(passengerId,flightList);
+                return "SUCCESS";
             }else{
                 List<Integer> passengerList = new ArrayList<>();
                 passengerList.add(passengerId);
@@ -116,7 +115,6 @@ public class AirportRepository {
         }catch (NullPointerException e){
             return "FAILURE";
         }
-        return "FAILURE";
     }
 
     public String cancelATicket(Integer flightId, Integer passengerId) {

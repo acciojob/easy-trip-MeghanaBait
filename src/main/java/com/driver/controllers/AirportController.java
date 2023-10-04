@@ -30,7 +30,7 @@ public class AirportController {
         return "SUCCESS";
     }
 
-    @GetMapping("/get-largest-aiport")
+    @GetMapping("/get-largest-airport")
     public String getLargestAirportName(){
 
         //Largest airport is in terms of terminals. 3 terminal airport is larger than 2 terminal airport
@@ -107,7 +107,7 @@ public class AirportController {
     }
 
 
-    @GetMapping("/get-aiportName-from-flight-takeoff/{flightId}")
+    @GetMapping("/get-airportName-from-flight-takeoff/{flightId}")
     public String getAirportNameFromFlightId(@PathVariable("flightId")Integer flightId){
 
         //We need to get the starting airportName from where the flight will be taking off (Hint think of City variable if that can be of some use)
