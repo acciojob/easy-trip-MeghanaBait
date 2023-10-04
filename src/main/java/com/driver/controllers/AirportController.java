@@ -23,10 +23,7 @@ public class AirportController {
 //    @Autowired
 //    AirportService airportService;
 
-    private final AirportService airportService;
-    public AirportController(AirportService airportService){
-        this.airportService = airportService;
-    }
+    public AirportService airportService = new AirportService();
 
     @PostMapping("/add_airport")
     public String addAirport(@RequestBody Airport airport){
