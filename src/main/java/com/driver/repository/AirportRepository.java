@@ -29,19 +29,24 @@ public class AirportRepository {
                 maxTerminal = airport.getNoOfTerminals();
                 largestAirport = airport.getAirportName();
             }
-            else if(airport.getAirportName().equals(largestAirport)){
-                largestAirport = largestAirport.compareTo(airport.getAirportName()) < 0 ? largestAirport : airport.getAirportName();
+            else if (airport.getNoOfTerminals() == maxTerminal &&
+                    airport.getAirportName().compareTo(largestAirport) < 0) {
+                largestAirport = airport.getAirportName();
             }
         }
         return largestAirport;
     }
 
     public double getShortestDurationOfPossibleBetweenTwoCities(City fromCity, City toCity) {
-        double shortestDuration = -1;
+        double shortestDuration = Double.MAX_VALUE;
         for (Flight flight : flightMap.values()){
             if(flight.getFromCity().equals(fromCity) && flight.getToCity().equals(toCity)){
                 shortestDuration = Math.min(flight.getDuration(),shortestDuration);
             }
+        }
+
+        if(shortestDuration == Double.MAX_VALUE){
+            return -1;
         }
         return shortestDuration;
     }
@@ -66,12 +71,23 @@ public class AirportRepository {
             flightFare += bookedTickets*50;
             return flightFare;
         }
-        return flightFare;
+        else{
+            return -1;
+        }
     }
 
     public String bookATicket(Integer flightId, Integer passengerId) {
+
         //check failure conditions
-        if(passangerFlightsMap.containsKey(passengerId)) {
+
+        Flight flight = flightMap.get(flightId);
+        Passenger passenger = passengerMap.get(passengerId);
+        // Invalid flightId or passengerId
+        if (flight == null || passenger == null){
+            return "FAILURE";
+        }
+        // Passenger already booked a flight
+        if(passangerFlightsMap.containsKey(passengerId) && passangerFlightsMap.get(passengerId).contains(flightId)) {
             return "FAILURE";
         }
 
@@ -81,11 +97,13 @@ public class AirportRepository {
             }
         }
 
+        // Max capacity reached
         if(flightPassangersMap.containsKey(flightId)){
             if(flightMap.get(flightId).getMaxCapacity() > flightPassangersMap.get(flightId).size()){
                 flightPassangersMap.get(flightId).add(passengerId);
                 List<Integer> flightList = passangerFlightsMap.getOrDefault(passengerId,new ArrayList<>());
                 passangerFlightsMap.put(passengerId,flightList);
+                return "SUCCESS";
             }
         }else{
             List<Integer> passengerList = new ArrayList<>();
