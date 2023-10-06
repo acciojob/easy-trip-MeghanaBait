@@ -54,9 +54,9 @@ public class AirportRepository {
     public int getNumberOfPeopleOn(Date date, String airportName) {
         int numberOfPeople = 0;
         City airportCity = airportMap.get(airportName).getCity();
-        for(Flight flight: flightMap.values()){
-            if(flight.getFlightDate().equals(date)){
-                if(flight.getFromCity().equals(airportCity) || flight.getToCity().equals(airportCity)){
+        for (Flight flight : flightMap.values()) {
+            if (flight.getFlightDate().equals(date)) {
+                if (flight.getFromCity().equals(airportCity) || flight.getToCity().equals(airportCity)) {
                     numberOfPeople += flight.getMaxCapacity();
                 }
             }
@@ -124,6 +124,9 @@ public class AirportRepository {
                 passangerFlightsMap.get(passengerId).remove(flightId);
                 return "SUCCESS";
             }
+        }
+        else{
+            return "SUCCESS";
         }
 
         return "FAILURE";
