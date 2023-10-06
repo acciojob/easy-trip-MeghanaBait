@@ -43,7 +43,7 @@ public class AirportService {
 
         for (Airport airport : airports.values()){
             if (airport.getNoOfTerminals() > count){
-                if (airport.getNoOfTerminals() > count){
+                if (airportName == "" || airport.getNoOfTerminals() > count){
                     airportName = airport.getAirportName();
                     count= airport.getNoOfTerminals();
                 }else if(airport.getNoOfTerminals() == count){
@@ -62,7 +62,9 @@ public class AirportService {
         double time = Double.MAX_VALUE;
         for(Flight flight : flights.values()){
             if(flight.getToCity().equals(fromCity) && flight.getToCity().equals(toCity)){
-                time = Math.min(time,flight.getDuration());
+                if(flight.getDuration() < time){
+                    time = flight.getDuration();
+                }
             }
         }
 
