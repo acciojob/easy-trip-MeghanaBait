@@ -27,14 +27,14 @@ public class AirportController {
 
     @PostMapping("/add_airport")
     public String addAirport(@RequestBody Airport airport){
-        airportService.addAirport(airport);
+
         //Simply add airport details to your database
         //Return a String message "SUCCESS"
 
-        return "SUCCESS";
+        return airportService.addAirport(airport);
     }
 
-    @GetMapping("/get-largest-airport")
+    @GetMapping("/get-largest-aiport")
     public String getLargestAirportName(){
 
         //Largest airport is in terms of terminals. 3 terminal airport is larger than 2 terminal airport
@@ -53,12 +53,15 @@ public class AirportController {
     }
 
     @GetMapping("/get-number-of-people-on-airport-on/{date}")
-    public int getNumberOfPeopleOn(@PathVariable("date") Date date,@RequestParam("airportName")String airportName){
+    public int getNumberOfPeopleOnAirport(@PathVariable("date") Date date,@RequestParam("airportName")String airportName){
 
         //Calculate the total number of people who have flights on that day on a particular airport
         //This includes both the people who have come for a flight and who have landed on an airport after their flight
-
-        return airportService.getNumberOfPeopleOn(date, airportName);
+        try{
+            return airportService.getNumberOfPeopleOnAirport(date, airportName);
+        }catch (Exception e){
+            return 0;
+        }
     }
 
     @GetMapping("/calculate-fare")
@@ -105,9 +108,8 @@ public class AirportController {
 
     @PostMapping("/add-flight")
     public String addFlight(@RequestBody Flight flight){
-        airportService.addFlight(flight);
         //Return a "SUCCESS" message string after adding a flight.
-       return "SUCCESS";
+       return airportService.addFlight(flight);
     }
 
 
