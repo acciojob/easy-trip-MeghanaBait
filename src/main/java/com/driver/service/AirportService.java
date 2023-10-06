@@ -70,7 +70,7 @@ public class AirportService {
         else return  time;
     }
 
-    public int getNumberOfPeopleOnAirport(Date date, String airportName) {
+    public int getNumberOfPeopleOn(Date date, String airportName) {
         int numberOfPeople = 0;
         if(flightBookings.isEmpty() || flights.isEmpty() || airports.isEmpty()){
             return 0;
