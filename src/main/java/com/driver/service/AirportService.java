@@ -42,7 +42,7 @@ public class AirportService {
         int count = Integer.MIN_VALUE;
 
         for (Airport airport : airports.values()){
-            if (airport.getNoOfTerminals() > count){
+            if (airport.getNoOfTerminals() >= count){
                 if (airportName == "" || airport.getNoOfTerminals() > count){
                     airportName = airport.getAirportName();
                     count= airport.getNoOfTerminals();
@@ -78,7 +78,7 @@ public class AirportService {
             return 0;
         }
         for (Flight flight : flights.values()) {
-            if (flight.getFlightDate().equals(date)) {
+            if (date.equals(flight.getFlightDate())) {
                 if (flight.getFromCity().equals(airports.get(airportName).getCity()) || flight.getToCity().equals(airports.get(airportName).getCity())) {
                     numberOfPeople += flightBookings.get(flight.getFlightId()).size();
                 }
