@@ -57,19 +57,15 @@ public class AirportService {
     }
 
     public double getShortestDurationOfPossibleBetweenTwoCities(City fromCity, City toCity) {
-        if(flights.isEmpty()) return -1;
-
-        double time = Double.MAX_VALUE;
-        for(Flight flight : flights.values()){
-            if(flight.getToCity().equals(fromCity) && flight.getToCity().equals(toCity)){
-                if(flight.getDuration() < time){
-                    time = flight.getDuration();
-                }
+        if(flights.size()==0)return -1;
+        double time=Double.MAX_VALUE;
+        for(Flight flight:flights.values()){
+            if(flight.getFromCity().equals(fromCity) && flight.getToCity().equals(toCity)){
+                if(flight.getDuration()<time)time=flight.getDuration();
             }
         }
-
-        if(time == Double.MAX_VALUE) return -1;
-        else return  time;
+        if(time==Double.MAX_VALUE)return -1;
+        else return time;
     }
 
     public int getNumberOfPeopleOn(Date date, String airportName) {
